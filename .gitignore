@@ -1,0 +1,15 @@
+# Local data and outputs
+docs/raw/
+out/
+
+# Derived files
+data/urls.valid.txt
+
+# OS/editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Envs
+.venv/
