@@ -1,3 +1,86 @@
+# UN-GGIM 15th Session Document Collection & Analysis
+
+This repository automates the collection and analysis of documents from the UN-GGIM 15th Session.
+
+## Quick Start
+
+1. **Scrape document URLs**: `make scrape`
+2. **Validate and fetch all PDFs**: `make fetch`  
+3. **Create unified PDF**: `make unified`
+4. **Generate analysis reports**: `make analyze`
+
+## Project Structure
+
+```
+ggim15/
+├── scripts/           # Ruby automation scripts
+│   ├── scrape_ggim15.rb      # Basic document scraper
+│   ├── enhanced_scraper.rb   # Comprehensive collection
+│   ├── analyze.rb            # Analysis and reporting
+│   ├── create_unified_pdf.rb # PDF merging utility
+│   └── analyze_unified_pdf.rb # Unified PDF analysis
+├── data/             # URLs and metadata
+├── docs/raw/         # Downloaded PDF documents (34 files, .gitignore'd)
+├── out/              # Analysis outputs (.gitignore'd)
+├── ggim15.pdf        # Unified PDF file (.gitignore'd)
+└── Makefile          # Workflow automation
+```
+
+## Workflow Commands
+
+Run `make help` to see all available targets:
+
+- `make scrape` - Extract document URLs from official site
+- `make validate` - Check URL accessibility
+- `make fetch` - Download all PDF documents (parallel with curl)
+- `make unified` - Create unified ggim15.pdf from all PDFs
+- `make analyze` - Generate analysis and inventory
+- `make clean` - Clean up temporary files
+
+## Document Collection Status
+
+**34 PDF documents** successfully collected from:
+https://ggim.un.org/meetings/GGIM-committee/15th-Session/documents/
+
+### Collection Breakdown:
+- **English Summary Documents**: 15 files (Agenda 4-18)
+- **Report/Add Documents**: 16 files (detailed reports)
+- **Session Documents**: 3 files (comprehensive reports, informal papers)
+
+### Unified PDF Output:
+📄 **`ggim15.pdf`** (7.4MB, 272 pages)
+- Complete collection of all 34 documents in logical order
+- **Ready for NotebookLM upload and analysis**
+
+## Analysis Options
+
+### 1. NotebookLM Analysis (Recommended)
+```bash
+# Upload the unified PDF to NotebookLM:
+ggim15.pdf
+```
+
+### 2. Command Line Analysis
+```bash
+make analyze
+cat out/notebooklm.txt  # Structured analysis guide
+```
+
+## Analysis Outputs
+
+- `out/summary.txt` - Document collection summary
+- `out/inventory.json` - Structured document inventory
+- `out/notebooklm.txt` - Formatted guide for NotebookLM analysis
+- `ggim15.pdf` - Unified PDF for comprehensive analysis
+
+## Requirements
+
+- Ruby 3.0+ (standard library only)
+- pdfunite (from poppler-utils) for PDF merging
+- curl for downloading (or optional aria2c for faster downloads)
+- make for workflow automation
+
+
 # ggim15: UN-GGIM 15th Session Meeting Documents workflow (with Copilot/GenAI)
 
 UN-GGIM 15 の Meeting Documents を収集し、Google NotebookLM で分析するための最小構成リポジトリです。作業は Makefile ベースで自動化し、URL リスト (data/urls.txt) は Generative AI（例: GitHub Copilot, ChatGPT, Claude など）で生成することを想定しています。

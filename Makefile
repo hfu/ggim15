@@ -9,9 +9,11 @@ OUT_DIR  := out
 URLS_FILE := $(DATA_DIR)/urls.txt
 VALID_URLS_FILE := $(DATA_DIR)/urls.valid.txt
 
-.PHONY: help init prompt validate fetch clean
+.PHONY: help init scrape validate fetch analyze clean
 
-help: ## Show help
+help: ## Show all available targets and their descriptions
+	@echo "UN-GGIM 15th Session Documents Workflow"
+	@echo "======================================="
 	@echo "Targets:"
 	@awk 'BEGIN {FS":.*##"} /^[a-zA-Z0-9_.-]+:.*##/ {printf "  %-20s %s\n", $$1, $$2}' $(MAKEFILE_LIST)
 
@@ -19,19 +21,30 @@ init: ## Create directories (data, docs/raw, out)
 	@mkdir -p $(DATA_DIR) $(DOCS_DIR) $(OUT_DIR)
 	@echo "Initialized: $(DATA_DIR) $(DOCS_DIR) $(OUT_DIR)"
 
-prompt: ## Show how to generate data/urls.txt with GenAI and required format
-	@echo "1) Open the prompt template:"
-	@echo "   - prompts/urls.prompt.md"
-	@echo "2) Paste that prompt into your LLM (e.g., GitHub Copilot Chat, ChatGPT, Claude) and get the URL list."
-	@echo "3) Save the result as: $(URLS_FILE)"
+prompt: ## Show how to use the automated scraper (preferred) or manual URL generation
+	@echo "RECOMMENDED: Use automated scraping:"
+	@echo "  make scrape"
 	@echo ""
-	@echo "Format of $(URLS_FILE):"
-	@echo "  - One URL per line"
-	@echo "  - Empty lines OK"
-	@echo "  - Lines starting with '#' are comments and ignored"
+	@echo "Alternative: Manual LLM workflow:"
+	@echo "1) Use prompts/urls.prompt.md with your LLM"
+	@echo "2) Save LLM output as: $(URLS_FILE)"
+	@echo "3) Run: make validate"
+
+scrape: ## Generate $(URLS_FILE) by scraping the official documents page (Ruby)
+	@echo "Scraping $(BASE_URL) ..."
+	@ruby scripts/scrape_ggim15.rb $(URLS_FILE)
+	@echo "OK: wrote $(URLS_FILE)"
+
+analyze: ## Analyze downloaded documents and prepare NotebookLM guide
+	@ruby scripts/analyze.rb --format summary
 	@echo ""
-	@echo "Base URL for reference:"
-	@echo "  $(BASE_URL)"
+	@ruby scripts/analyze.rb --format inventory
+	@ruby scripts/analyze.rb --format notebooklm
+	@echo "Analysis complete. See out/ directory for guides."
+
+ingest: ## [DEPRECATED] Use 'make scrape' instead for automated URL collection
+	@echo "This target is deprecated. Use 'make scrape' for automated collection."
+	@echo "For manual workflow, use 'make prompt' for instructions."
 
 validate: $(URLS_FILE) ## Validate URLs (HTTP 2xx/3xx) and save to data/urls.valid.txt
 	@test -f $(URLS_FILE) || (echo "Error: $(URLS_FILE) not found. Run 'make prompt' and create it with your LLM." && exit 1)
@@ -64,4 +77,17 @@ fetch: $(VALID_URLS_FILE) ## Download documents into docs/raw/ (uses aria2c if a
 clean: ## Remove downloaded docs and validated URL list
 	@rm -rf $(DOCS_DIR)/*
 	@rm -f $(VALID_URLS_FILE)
+	@rm -f ggim15.pdf
 	@echo "Cleaned: $(DOCS_DIR) and $(VALID_URLS_FILE)"
+
+analyze: ## Analyze downloaded documents and prepare NotebookLM guide
+	@ruby scripts/analyze.rb --format summary
+	@echo ""
+	@ruby scripts/analyze.rb --format inventory
+	@ruby scripts/analyze.rb --format notebooklm
+	@echo "Analysis complete. See out/ directory for guides."
+
+unified: ggim15.pdf ## Create unified ggim15.pdf from all PDFs
+
+ggim15.pdf: $(DOCS_DIR)/*.pdf
+	ruby scripts/create_unified_pdf.rb

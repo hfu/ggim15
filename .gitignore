@@ -2,7 +2,8 @@
 docs/raw/
 out/
 
-# Derived files
+# Generated files
+ggim15.pdf
 data/urls.valid.txt
 
 # OS/editor
@@ -11,5 +12,7 @@ Thumbs.db
 .vscode/
 .idea/
 
-# Envs
+# Python/Jupyter (if added later)
 .venv/
+*.pyc
+__pycache__/
