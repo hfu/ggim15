@@ -2,8 +2,21 @@
 
 This repository automates the collection and analysis of documents from the UN-GGIM 15th Session.
 
+> **📁 Ready-to-Use Files**: This repository includes the complete unified PDF (`ggim15.pdf`) and AI-generated summary audio (`ggim15.m4a`) for immediate analysis. See [Copyright & Usage](#copyright--usage) for important licensing information.
+
 ## Quick Start
 
+### Option 1: Use Pre-generated Files (Recommended)
+```bash
+# Download and analyze the unified PDF (7.4MB, 272 pages)
+# Contains all 34 English documents from UN-GGIM 15th Session
+open ggim15.pdf
+
+# Listen to AI-generated summary (NotebookLM audio)
+open ggim15.m4a
+```
+
+### Option 2: Generate Files from Scratch
 1. **Scrape document URLs**: `make scrape`
 2. **Validate and fetch all PDFs**: `make fetch`  
 3. **Create unified PDF**: `make unified`
@@ -22,7 +35,9 @@ ggim15/
 ├── data/             # URLs and metadata
 ├── docs/raw/         # Downloaded PDF documents (34 files, .gitignore'd)
 ├── out/              # Analysis outputs (.gitignore'd)
-├── ggim15.pdf        # Unified PDF file (.gitignore'd)
+├── ggim15.pdf        # 📁 Unified PDF file (all 34 documents, 7.4MB)
+├── ggim15.m4a        # 🎧 AI-generated summary audio (NotebookLM)
+├── COPYRIGHT.md      # ⚖️ Licensing and usage information
 └── Makefile          # Workflow automation
 ```
 
@@ -54,13 +69,25 @@ https://ggim.un.org/meetings/GGIM-committee/15th-Session/documents/
 
 ## Analysis Options
 
-### 1. NotebookLM Analysis (Recommended)
+### 1. Ready-to-Use Files
+📄 **ggim15.pdf** (7.4MB, 272 pages)
+- Complete unified document with all 34 English PDFs
+- Ready for NotebookLM upload or direct reading
+- Logical order: Session reports → Agenda 4-18 summaries → Detailed reports
+
+🎧 **ggim15.m4a** (AI-generated summary, 45MB)
+- NotebookLM audio summary of the complete session
+- Approximately 20-30 minutes of key insights
+- Great for overview before diving into detailed documents
+
+### 2. NotebookLM Analysis
 ```bash
-# Upload the unified PDF to NotebookLM:
-ggim15.pdf
+# Upload either or both files to NotebookLM:
+# 1. ggim15.pdf - for text-based analysis
+# 2. Use ggim15.m4a as reference for key themes
 ```
 
-### 2. Command Line Analysis
+### 3. Command Line Analysis
 ```bash
 make analyze
 cat out/notebooklm.txt  # Structured analysis guide
@@ -68,10 +95,21 @@ cat out/notebooklm.txt  # Structured analysis guide
 
 ## Analysis Outputs
 
+- `ggim15.pdf` - 📁 **Unified PDF ready for analysis** (7.4MB, 272 pages)
+- `ggim15.m4a` - 🎧 **AI-generated audio summary** (NotebookLM output)
 - `out/summary.txt` - Document collection summary
 - `out/inventory.json` - Structured document inventory
 - `out/notebooklm.txt` - Formatted guide for NotebookLM analysis
-- `ggim15.pdf` - Unified PDF for comprehensive analysis
+
+## Copyright & Usage
+
+⚖️ **Important**: This repository contains UN official documents and AI-generated content. Please review [COPYRIGHT.md](COPYRIGHT.md) for:
+- UN document licensing and attribution requirements
+- AI-generated content usage guidelines  
+- Academic and research use recommendations
+- Commercial use restrictions
+
+**Summary**: Documents are UN public records suitable for research/education. AI audio is supplementary - always refer to original documents for authoritative information.
 
 ## Requirements
 

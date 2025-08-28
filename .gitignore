@@ -2,8 +2,7 @@
 docs/raw/
 out/
 
-# Generated files
-ggim15.pdf
+# Generated files (exclude from git)
 data/urls.valid.txt
 
 # OS/editor
